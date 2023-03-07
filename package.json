@@ -1,0 +1,31 @@
+{
+  "name": "1stchallenge",
+  "version": "1.0.0",
+  "description": "\"@ ArkusChallenge\"",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErickIsra01/ArkusChallenge.git"
+  },
+  "author": "ErickIsra01",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ErickIsra01/ArkusChallenge/issues"
+  },
+  "homepage": "https://github.com/ErickIsra01/ArkusChallenge#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "gitignore": "^0.7.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.1",
+    "nodemon": "^2.0.21",
+    "swagger-ui-express": "^4.6.2",
+    "yup": "^1.0.2"
+  }
+}
