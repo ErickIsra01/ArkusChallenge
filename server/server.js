@@ -1,13 +1,14 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const swaggerUI = require("swagger-ui-express");
-const swaggerDocument = require("./config/swagger.json");
-const routes = require("./routes/index");
+const swaggerDocument = require(`./${process.env.VERSION}/config/swagger.json`);
+const APIVersion = require(`./${process.env.VERSION}/routes`);
 const app = express();
 
-require("dotenv").config();
-require("./config/database");
+require(`./${process.env.VERSION}/config/database`);
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,7 +25,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.use("/api", routes);
+app.use(`/api/${process.env.VERSION}`, APIVersion);
 
 app.use("/api-doc", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
