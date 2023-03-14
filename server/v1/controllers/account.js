@@ -28,8 +28,31 @@ const createAccount = async (req, res) => {
             })
         )
     };
-
-
 };
 
-module.exports = { createAccount };
+const updateAccount = async (req, res) => {
+    try {
+        const validatedData = await accountDTO.inputUpdateAccount(req.body);
+        if(validatedData.isValid === false) return (res.status(422).send(validatedData));
+
+        const checkAccountName = await accountDB.findByName(validatedData.data.accountName);
+        if(checkAccountName) return (res.status(409).send('Account name already exists'));
+
+        const data = await accountServices.updateAccount(validatedData);
+
+        return(res.status(200).send({
+            isValid: data.isValid,
+            message: data.message,
+            data: data.data
+        }));
+
+    } catch (error) {
+        res.status(500).send({
+            isValid: false,
+            message: error,
+            data: null
+        })
+    }
+}
+
+module.exports = { createAccount, updateAccount };

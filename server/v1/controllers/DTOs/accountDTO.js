@@ -21,4 +21,28 @@ function inputCreateAccount(data) {
     }
 };
 
-module.exports = { inputCreateAccount };
+function inputUpdateAccount(data) {
+    try {
+        const schema = Joi.object({
+            idAccount: Joi.string().hex().length(24),
+            data: Joi.object({
+                accountName: Joi.string(),
+                clientName: Joi.string(),
+                responsableName: Joi.string()
+            })
+        })
+
+        const validatedData = schema.validate(data);
+
+        if(validatedData.error) {
+            return ({ isValid: false, message: validatedData.error.details[0].message.replace('\"', "").replace('\"', ""), data: null});
+        }
+
+        return validatedData.value;
+
+    } catch (error) {
+        return ({ isValid: false, message: error, data: null })
+    }
+};
+
+module.exports = { inputCreateAccount, inputUpdateAccount };

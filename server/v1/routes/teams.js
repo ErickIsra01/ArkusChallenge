@@ -6,8 +6,8 @@ const rangeVerification = require("../middlewares/rangeVerification");
 
 const app = express();
 
-app.post('/createTeam', teamControllers.createTeam);
-app.put('/updateTeam');
+app.post('/createTeam', authorization, rangeVerification.superUserAndAdminRange, teamControllers.createTeam);
+app.put('/updateTeam', authorization, rangeVerification.superUserAndAdminRange, teamControllers.updateTeam);
 app.delete('/deleteTeam');
 
 module.exports = app;

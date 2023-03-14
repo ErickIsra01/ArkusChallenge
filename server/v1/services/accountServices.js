@@ -5,9 +5,19 @@ async function createAccount(data) {
 
     return ({
         isValid: true,
-        message: "Account successfully created",
+        message: "Account created successfully",
         data: accountCreated
     });
 };
 
-module.exports = { createAccount };
+async function updateAccount(data) {
+    const accountUpdated = await accountDB.updateAccount({_id: data.idAccount}, data.data);
+
+    return ({
+        isValid: true,
+        message: "Account updated successfully",
+        data: accountUpdated
+    });
+}
+
+module.exports = { createAccount, updateAccount };

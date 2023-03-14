@@ -9,15 +9,15 @@ const createUser = async (req, res) => {
     try{
         const idUser = jwt.verify(req.headers.authorization.split(" ")[1], process.env.TOKEN_SECRET);
         const { range } = await usersDB.findById(idUser);
-        req.body = { range };
+        req.body.rangeUser = range;
 
         const validatedData = await usersDTO.inputCreateUserDTO(req.body);
-        if(validatedData.isValid === false) return(res.send(validatedData));
+        if(validatedData.isValid === false) return(res.status(422).send(validatedData));
 
-        const ifUserExists = await usersDB.findByMail(validatedData.email);
+        const ifUserExists = await usersDB.findByMail(validatedData.data.email);
         if(ifUserExists) return( res.status(409).send("User already exists"));
 
-        const data = await usersServices.userRegistration(validatedData);
+        const data = await usersServices.userRegistration(validatedData.data);
 
         return res.status(200).send({
             isValid: data.isValid,
@@ -36,27 +36,18 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
     try {
-        const checkUser = await usersDB.findById(req.body.idUser);
-        if(!checkUser) return(res.status(404).send({
-            isValid: false,
-            message: "User not found",
-            data: null
-        }));     
+        const idUser = jwt.verify(req.headers.authorization.split(" ")[1], process.env.TOKEN_SECRET);
+        const { range } = await usersDB.findById(idUser);
+        req.body.rangeUser = range;
 
-        req.body.range = checkUser.range;
-        
-        const validatedData = usersDTO.inputUpdateItemDTO(req.body);
-        if(validatedData.isValid === false) return (validatedData);   
+        const validatedData = await usersDTO.inputUpdateItemDTO(req.body);
+        if(validatedData.isValid === false) return(res.status(422).send(validatedData));
 
-        const checkTeam = await teamDB.findById(validatedData.data.team);
-        if(!checkTeam && validatedData.data.team) return(res.status(404).send({
-            isValid: false,
-            message: "Cannot add this user to a team that doesn't exist",
-            data: null
-        }))
+        const checkUser = await usersDB.findByMail(validatedData.data.email);
+        if(checkUser) return(res.status(409).send("Email already exists"));     
 
-        const data = usersServices.updateUser(validatedData, checkTeam._id);
-        
+        const data = await usersServices.updateUser(validatedData);
+
         return res.status(200).send({
             isValid: data.isValid,
             message: data.message,

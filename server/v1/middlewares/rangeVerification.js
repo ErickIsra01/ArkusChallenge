@@ -21,7 +21,7 @@ const superUserRange = async(req, res, next) => {
 const superUserAndAdminRange = async (req, res, next) => {
     const idUser = jwt.verify(req.headers.authorization.split(" ")[1], process.env.TOKEN_SECRET);
     const userData = await usersDB.findById(idUser);
-    if(userData.range !== "superuser" && "admin") {
+    if(userData.range !== "superuser" && userData.range !== "admin") {
         return(res.status(403).send({
             isValid: false,
             message: "Don't have permissions to access this resource",

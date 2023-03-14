@@ -11,4 +11,14 @@ async function createTeam(data) {
     });
 };
 
-module.exports = { createTeam };
+async function updateTeam(data) {
+    const createdTeam = await teamDB.updateTeam({_id: data.idTeam}, data.data);
+
+    return ({
+        isValid: true,
+        message: "Team updated successfully",
+        data: createdTeam
+    });
+};
+
+module.exports = { createTeam, updateTeam };
