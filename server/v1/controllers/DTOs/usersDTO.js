@@ -3,14 +3,26 @@ const Joi = require("joi");
 function inputCreateUserDTO(data) {
     try {
         const schema = Joi.object({
-            name: Joi.string().required(),
-            email: Joi.string().email().required(),
-            range: Joi.string().valid("admin", "user").required(),
-            password: Joi.string().required(),
-            englishLevel: Joi.string().optional(),
-            techKnowledge: Joi.string().optional(),
-            CV:  Joi.string().uri().optional(),
-            team: Joi.string().hex().length(24).optional(),
+            range: Joi.string().valid('admin', 'user', 'superuser'),
+            data: Joi.alternatives().conditional('range', 
+                { is: 'admin', then: Joi.object({
+                    name: Joi.string().required(),
+                    email: Joi.string().email().required(),
+                    range: Joi.string().valid("user").required(),
+                    password: Joi.string().required(),
+                    englishLevel: Joi.string().optional(),
+                    techKnowledge: Joi.string().optional(),
+                    CV:  Joi.string().uri().optional()
+                })}, 
+                { is: 'superuser', then: Joi.object({
+                    name: Joi.string().required(),
+                    email: Joi.string().email().required(),
+                    range: Joi.string().valid("admin", "user").required(),
+                    password: Joi.string().required(),
+                    englishLevel: Joi.string().optional(),
+                    techKnowledge: Joi.string().optional(),
+                    CV:  Joi.string().uri().optional()
+                })}).required()
         });
         
         const validatedData = schema.validate(data); 

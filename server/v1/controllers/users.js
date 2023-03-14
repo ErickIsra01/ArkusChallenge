@@ -3,13 +3,19 @@ const usersDB = require("../services/database/usersDB");
 const usersServices = require("../services/usersServices");
 const teamDB = require("../services/database/teamDB");
 
+const jwt = require('jsonwebtoken');
+
 const createUser = async (req, res) => {
     try{
+        const idUser = jwt.verify(req.headers.authorization.split(" ")[1], process.env.TOKEN_SECRET);
+        const { range } = await usersDB.findById(idUser);
+        req.body = { range };
+
         const validatedData = await usersDTO.inputCreateUserDTO(req.body);
         if(validatedData.isValid === false) return(res.send(validatedData));
 
         const ifUserExists = await usersDB.findByMail(validatedData.email);
-        if(ifUserExists) return( res.send("User already exists"));
+        if(ifUserExists) return( res.status(409).send("User already exists"));
 
         const data = await usersServices.userRegistration(validatedData);
 

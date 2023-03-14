@@ -4,7 +4,6 @@ const usersDTO = require("../controllers/DTOs/usersDTO");
 
 async function userRegistration(data) {
     const createdUser = await usersDB.addUser(data);
-    const teamUser = await teamDB.updateTeam({_id: data.team}, { $push: { members: createdUser._id } });
 
     if(data.team === undefined) return({
         isValid: true,
@@ -26,7 +25,7 @@ async function userRegistration(data) {
 
     return ({
         isValid: true,
-        message: "User created successfully and added to a team",
+        message: "User created successfully",
         data: {
             createdUser,
             teamUser

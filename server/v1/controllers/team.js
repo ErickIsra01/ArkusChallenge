@@ -6,11 +6,11 @@ const teamServices = require("../services/teamServices");
 const createTeam = async (req, res) => {
     try{
         const validatedData = await teamDTO.inputCreateTeam(req.body);
-        if(validatedData.isValid === false) return(res.send(validatedData));
+        if(validatedData.isValid === false) return(res.status(422).send(validatedData));
         
         const ifTeamExists = await teamDB.findByName(validatedData.teamName);
-        if(ifTeamExists) return( res.send("Team name already exists"));
-        
+        if(ifTeamExists) return( res.status(409).send("Team name already exists"));
+
         const data = await teamServices.createTeam(req.body);
 
         return res.status(200).send({

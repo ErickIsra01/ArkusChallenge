@@ -9,8 +9,7 @@ const createAccount = async (req, res) => {
         if(validatedData.isValid === false) return (res.status(422).send(validatedData));
 
         const ifExistsAccount = await accountDB.findByName(validatedData.accountName);
-        console.log()
-        if(ifExistsAccount) return(res.send("Account name already exists"));
+        if(ifExistsAccount) return(res.status(409).send("Account name already exists"));
 
         const data = await accountServices.createAccount(req.body);
 

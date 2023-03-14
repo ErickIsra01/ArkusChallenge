@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
     password: { type: String },
     englishLevel: { type: String },
     techKnowledge: { type: String },
-    CV: { type: String }
+    CV: { type: String },
+    team: { type: Schema.Types.ObjectId, ref: 'teams'}
 })
 
 module.exports = mongoose.model('users', userSchema);
