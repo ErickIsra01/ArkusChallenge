@@ -7,7 +7,13 @@ const rangeVerification = require("../middlewares/rangeVerification");
 const app = express();
 
 app.post('/createTeam', authorization, rangeVerification.superUserAndAdminRange, teamControllers.createTeam);
+
 app.put('/updateTeam', authorization, rangeVerification.superUserAndAdminRange, teamControllers.updateTeam);
-app.delete('/deleteTeam');
+app.put('/addToAccount', authorization, rangeVerification.superUserAndAdminRange, )
+
+app.delete('/deleteTeam', authorization, rangeVerification.superUserAndAdminRange, teamControllers.deleteTeam);
+
+app.get('/getOneTeam')
+app.get('/getManyTeams')
 
 module.exports = app;

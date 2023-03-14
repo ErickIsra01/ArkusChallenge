@@ -12,6 +12,11 @@ async function updateUser(filter, data) {
     return user;
 }
 
+async function deleteUser(id) {
+    const user = usersModel.findOneAndDelete(id);
+    return user;
+}
+
 async function findByMail(email) {
     const user = await usersModel.findOne({ email });
     return user;
@@ -27,4 +32,4 @@ async function findByToken(token) {
     return user;
 }
 
-module.exports = { findByMail, findById, findByToken, addUser, updateUser };
+module.exports = { findByMail, findById, findByToken, addUser, updateUser, deleteUser };

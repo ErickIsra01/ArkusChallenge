@@ -20,4 +20,14 @@ async function updateAccount(data) {
     });
 }
 
-module.exports = { createAccount, updateAccount };
+async function deleteAccount(data) {
+    const accountDeleted = await accountDB.deleteAccount({_id: data.idAccount});
+
+    return ({
+        isValid: true,
+        message: "Account deleted successfully",
+        data: accountDeleted
+    });
+}
+
+module.exports = { createAccount, updateAccount, deleteAccount };

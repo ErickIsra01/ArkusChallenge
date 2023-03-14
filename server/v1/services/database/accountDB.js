@@ -15,4 +15,10 @@ async function updateAccount(id, data) {
     const account = accountModel.findOneAndUpdate(id, data);
     return account
 }
-module.exports = { findByName, addAccount, updateAccount };
+
+async function deleteAccount(id) {
+    const account = accountModel.findOneAndDelete(id);
+    return account
+}
+
+module.exports = { findByName, addAccount, updateAccount, deleteAccount };

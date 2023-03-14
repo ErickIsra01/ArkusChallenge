@@ -21,4 +21,14 @@ async function updateTeam(data) {
     });
 };
 
-module.exports = { createTeam, updateTeam };
+async function deleteTeam(data) {
+    const deletedTeam = await teamDB.deleteTeam({_id: data.idTeam});
+
+    return ({
+        isValid: true,
+        message: "Team deleted successfully",
+        data: deletedTeam
+    });
+};
+
+module.exports = { createTeam, updateTeam, deleteTeam };

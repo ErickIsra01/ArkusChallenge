@@ -6,6 +6,11 @@ async function createTeam(data) {
     return createdTeam;
 }
 
+async function deleteTeam(id) {
+    const deletedTeam = await teamModel.findOneAndDelete(id);
+    return deletedTeam;
+};
+
 async function findByName(name) {
     const team = await teamModel.findOne({ teamName: name});
     return team;
@@ -21,4 +26,4 @@ async function updateTeam(id, data) {
     return updatedTeam;
 }
 
-module.exports = { findByName, createTeam, updateTeam, findById };
+module.exports = { findByName, createTeam, updateTeam, findById, deleteTeam };

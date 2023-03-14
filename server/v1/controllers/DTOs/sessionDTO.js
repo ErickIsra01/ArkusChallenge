@@ -5,7 +5,7 @@ function inputLoginDTO(data) {
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().required(),
-        });
+        }).unknown(false);
 
         const validatedData = schema.validate(data);
 
@@ -22,9 +22,8 @@ function inputLoginDTO(data) {
 function outputLoginDTO(tokenData, userData) {
     const outputData = {
         idUser: userData._id,
-        names: userData.names,
-        middleName: userData.middleName,
-        lastName: userData.lastName,
+        name: userData.name,
+        range: userData.range,
         token: tokenData.token
     };
     return outputData;

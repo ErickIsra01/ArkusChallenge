@@ -55,4 +55,48 @@ const updateAccount = async (req, res) => {
     }
 }
 
-module.exports = { createAccount, updateAccount };
+const deleteAccount = async (req, res) => {
+    try {
+        const validatedData = await accountDTO.inputDeleteAccount(req.body);
+        if(validatedData.isValid === false) return (res.status(422).send(validatedData));
+
+        const data = await accountServices.deleteAccount(validatedData);
+
+        return(res.status(200).send({
+            isValid: data.isValid,
+            message: data.message,
+            data: data.data
+        }));
+
+    } catch (error) {
+        res.status(500).send({
+            isValid: false,
+            message: error,
+            data: null
+        })
+    }
+}
+
+const getOneAccount = async (req, res) => {
+    try {
+        const validatedData = await accountDTO.inputDeleteAccount(req.body);
+        if(validatedData.isValid === false) return (res.status(422).send(validatedData));
+
+        const data = await accountServices.deleteAccount(validatedData);
+
+        return(res.status(200).send({
+            isValid: data.isValid,
+            message: data.message,
+            data: data.data
+        }));
+
+    } catch (error) {
+        res.status(500).send({
+            isValid: false,
+            message: error,
+            data: null
+        })
+    }
+}
+
+module.exports = { createAccount, updateAccount, deleteAccount, getOneAccount };

@@ -13,7 +13,7 @@ function inputCreateUserDTO(data) {
                     englishLevel: Joi.string().optional(),
                     techKnowledge: Joi.string().optional(),
                     CV:  Joi.string().uri().optional()
-                })}, 
+                }).unknown(false)}, 
                 { is: 'superuser', then: Joi.object({
                     name: Joi.string().required(),
                     email: Joi.string().email().required(),
@@ -22,11 +22,12 @@ function inputCreateUserDTO(data) {
                     englishLevel: Joi.string().optional(),
                     techKnowledge: Joi.string().optional(),
                     CV:  Joi.string().uri().optional()
-                })})
+                }).unknown(false)})
                 .required()
         });
         
         const validatedData = schema.validate(data);
+        
         if(validatedData.error) {
             return ({ isValid: false, message: validatedData.error.details[0].message.replace('\"', "").replace('\"', ""), data: null});
         }
@@ -51,16 +52,16 @@ function inputUpdateItemDTO(data) {
                     englishLevel: Joi.string(),
                     techKnowledge: Joi.string(),
                     CV:  Joi.string().uri()
-                })}, 
-                { is: 'user', then: Joi.object({
+                }).unknown(false), otherwise: Joi.object().keys({
                     name: Joi.string(),
                     englishLevel: Joi.string(),
                     techKnowledge: Joi.string(),
                     CV:  Joi.string().uri()
-                }).unknown()})
-        });
+                }).unknown(false)})
+        }).unknown(false);
         
         const validatedData = schema.validate(data);
+
         if(validatedData.error) {
             return ({ isValid: false, message: validatedData.error.details[0].message.replace('\"', "").replace('\"', ""), data: null});
         }
@@ -71,8 +72,50 @@ function inputUpdateItemDTO(data) {
     };
 }
 
-async function outputUpdateItemDTO(user, team) {
-    console.log(user, team)
-}
+function inputGetOneUserAndDeleteUser(data) {
+    try {
+        const schema = Joi.object({
+            idUser: Joi.string().hex().length(24)
+        }).unknown(false);
 
-module.exports = { inputCreateUserDTO, inputUpdateItemDTO, outputUpdateItemDTO };
+        const validatedData = schema.validate(data);
+
+        if(validatedData.error) {
+            return ({ isValid: false, message: validatedData.error.details[0].message.replace('\"', "").replace('\"', ""), data: null});
+        }
+
+        return validatedData.value;
+
+    } catch (error) {
+        return ({ isValid: false, message: error, data: null })
+    }
+};
+
+function inputAddToTeam(data) {
+    try {
+        const schema = Joi.object({
+            idUser: Joi.string().hex().length(24),
+            data: Joi.object({
+                idTeam: Joi.string().hex().length(24),
+            })
+        }).unknown(false)
+        
+        
+        const validatedData = schema.validate(data);
+        
+        if(validatedData.error) {
+            return ({ isValid: false, message: validatedData.error.details[0].message.replace('\"', "").replace('\"', ""), data: null});
+        }
+    
+        return validatedData.value;
+    } catch (error) {
+        return ({ isValid: false, message: error, data: null});
+    };
+};
+
+module.exports = { 
+    inputCreateUserDTO,
+    inputUpdateItemDTO,
+    inputGetOneUserAndDeleteUser,
+    inputAddToTeam
+ };
