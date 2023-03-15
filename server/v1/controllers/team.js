@@ -2,6 +2,7 @@ const express = require("express");
 const teamDTO = require("./DTOs/teamDTO");
 const teamDB = require("../services/database/teamDB");
 const teamServices = require("../services/teamServices");
+const accountDB = require("../services/database/accountDB");
 
 const createTeam = async (req, res) => {
     try{
@@ -55,7 +56,7 @@ const updateTeam = async (req, res) => {
 
 const deleteTeam = async (req, res) => {
     try{
-        const validatedData = await teamDTO.inputDeleteTeam(req.body);
+        const validatedData = await teamDTO.inputDeleteandGetOneTeam(req.body);
         if(validatedData.isValid === false) return(res.status(422).send(validatedData));
 
         const data = await teamServices.deleteTeam(validatedData);
@@ -77,20 +78,18 @@ const deleteTeam = async (req, res) => {
 
 const addToAccount = async (req, res) => {
     try{
-        const validatedData = await usersDTO.inputAddToTeam(req.body);
+        const validatedData = await teamDTO.inputAddToAccount(req.body);
         if(validatedData.isValid === false) return(res.status(422).send(validatedData));
 
-        const checkedTeam = await teamDB.findById(validatedData.data.idTeam);
-        if(!checkedTeam) return(res.status(409).send("The team you want to add the user doesn't exist"));
+        const checkedAccount = await accountDB.findById({_id: validatedData.data.idAccount});
+        if(!checkedAccount) return(res.status(409).send("The account to which you want to add the team doesn't exist"));
 
-        const checkedUser = await usersDB.findById(validatedData.idUser);
-        if(!checkedUser) return(res.status(409).send("The user doesn't exist"));
+        const checkedTeam = await teamDB.findById(validatedData.idTeam);
+        if(!checkedTeam) return(res.status(409).send("The team doesn't exist"));
 
-        if(checkedUser.idTeam == validatedData.data.idTeam) return(res.status(409).send("The user is already in the team"))
+        if(checkedTeam.idAccount == validatedData.data.idAccount) return(res.status(409).send("The team is already in the account"))
 
-        validatedData.data.idResponsable = jwt.verify(req.headers.authorization.split(" ")[1], process.env.TOKEN_SECRET);
-
-        const data = await usersServices.addToTeam(validatedData, checkedUser, checkedTeam);
+        const data = await teamServices.addToAccount(validatedData, checkedTeam, checkedAccount);
 
         return res.status(200).send({
             isValid: data.isValid,
@@ -107,4 +106,48 @@ const addToAccount = async (req, res) => {
     }
 };
 
-module.exports = { createTeam, updateTeam, deleteTeam, addToAccount };
+const getOneTeam = async (req, res) => {
+    try{
+        const validatedData = await teamDTO.inputDeleteandGetOneTeam(req.params);
+        if(validatedData.isValid === false) return(res.status(422).send(validatedData));
+        
+        const checkedTeam = await teamDB.findById(validatedData.idTeam);
+        if(!checkedTeam) return(res.status(409).send("The team doesn't exist"));
+
+        const data = await teamServices.getOneTeam(validatedData);
+
+        return res.status(200).send({
+            isValid: data.isValid,
+            message: data.message,
+            data: data.data 
+        });
+
+    } catch (error) {
+        return res.status(500).send({
+            isValid: false,
+            message: error,
+            data: null 
+        });
+    }
+};
+
+const getAllTeams = async (req, res) => {
+    try{
+        const data = await teamServices.getAllTeams();
+
+        return res.status(200).send({
+            isValid: data.isValid,
+            message: data.message,
+            data: data.data 
+        });
+
+    } catch (error) {
+        return res.status(500).send({
+            isValid: false,
+            message: error,
+            data: null 
+        });
+    }
+};
+
+module.exports = { createTeam, updateTeam, deleteTeam, addToAccount, getOneTeam, getAllTeams };

@@ -14,6 +14,6 @@ app.put('/updateAccount', authorization, rangeVerification.superUserAndAdminRang
 app.delete('/deleteAccount', authorization, rangeVerification.superUserAndAdminRange, accountControllers.deleteAccount);
 
 app.get('/getOneAccount', authorization, accountControllers.getOneAccount);
-app.get('/getManyAccounts')
+app.get('/getManyAccounts', authorization, accountControllers.getAllAccounts);
 
 module.exports = app;

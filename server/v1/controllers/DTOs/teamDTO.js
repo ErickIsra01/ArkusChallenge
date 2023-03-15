@@ -41,7 +41,7 @@ function inputUpdateTeam(data) {
     }
 };
 
-function inputDeleteTeam(data) {
+function inputDeleteandGetOneTeam(data) {
     try {
         const schema = Joi.object({
             idTeam: Joi.string().hex().length(24)
@@ -82,4 +82,4 @@ function inputAddToAccount(data) {
     };
 };
 
-module.exports = { inputCreateTeam, inputUpdateTeam, inputDeleteTeam, inputAddToAccount };
+module.exports = { inputCreateTeam, inputUpdateTeam, inputDeleteandGetOneTeam, inputAddToAccount };

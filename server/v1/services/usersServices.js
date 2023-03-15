@@ -2,7 +2,6 @@ const usersDB = require("./database/usersDB");
 const teamDB = require("../services/database/teamDB");
 const bcrypt = require('bcryptjs');
 const movesDB = require("./database/movesDB");
-const { create } = require("../models/usersModel");
 
 async function userRegistration(data) {
     const encryptedPassword = await bcrypt.hash(data.password, 10);

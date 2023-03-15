@@ -79,7 +79,7 @@ const deleteAccount = async (req, res) => {
 
 const getOneAccount = async (req, res) => {
     try {
-        const validatedData = await accountDTO.inputDeleteAccount(req.body);
+        const validatedData = await accountDTO.inputDeleteAccount(req.params);
         if(validatedData.isValid === false) return (res.status(422).send(validatedData));
 
         const data = await accountServices.deleteAccount(validatedData);
@@ -97,6 +97,25 @@ const getOneAccount = async (req, res) => {
             data: null
         })
     }
-}
+};
 
-module.exports = { createAccount, updateAccount, deleteAccount, getOneAccount };
+const getAllAccounts = async (req, res) => {
+    try {
+        const data = await accountServices.getAllAccounts();
+
+        return(res.status(200).send({
+            isValid: data.isValid,
+            message: data.message,
+            data: data.data
+        }));
+
+    } catch (error) {
+        res.status(500).send({
+            isValid: false,
+            message: error,
+            data: null
+        })
+    }
+};
+
+module.exports = { createAccount, updateAccount, deleteAccount, getOneAccount, getAllAccounts };

@@ -4,7 +4,6 @@ const usersServices = require("../services/usersServices");
 const teamDB = require("../services/database/teamDB");
 
 const jwt = require('jsonwebtoken');
-const { validate } = require("../models/movesModel");
 
 const createUser = async (req, res) => {
     try{
@@ -67,7 +66,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try{
-        const validatedData = await usersDTO.inputDeleteUser(req.body);
+        const validatedData = await usersDTO.inputGetOneUserAndDeleteUser(req.body);
         if(validatedData.isValid === false) return(res.status(422).send(validatedData));
 
         const data = await usersServices.deleteUser(validatedData);
@@ -121,7 +120,7 @@ const addToTeam = async (req, res) => {
 
 const getOneUser = async (req, res) => {
     try{
-        const validatedData = await usersDTO.inputGetOneUserAndDeleteUser(req.body);
+        const validatedData = await usersDTO.inputGetOneUserAndDeleteUser(req.params);
         if(validatedData.isValid === false) return(res.status(422).send(validatedData));
         
         const checkedUser = await usersDB.findById(validatedData.idUser);

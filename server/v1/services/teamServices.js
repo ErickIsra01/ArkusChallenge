@@ -1,5 +1,6 @@
 const teamDB = require("./database/teamDB");
-const accountDB = require("./database/accountDB");
+const usersDB = require("./database/usersDB");
+const mongoose = require("mongoose").Types.ObjectId;
 
 async function createTeam(data) {
     const createdTeam = await teamDB.createTeam(data);
@@ -31,4 +32,47 @@ async function deleteTeam(data) {
     });
 };
 
-module.exports = { createTeam, updateTeam, deleteTeam };
+async function addToAccount(data, teamData, accountData) {
+    await teamDB.updateTeam({ _id: data.idTeam }, data.data);
+
+    return ({
+        isValid: true,
+        message: "Team added to account successfully",
+        data: {
+            teamName: teamData.teamName,
+            accountData
+        }
+    });
+};
+
+async function getOneTeam(data) {
+    const team = await teamDB.findById(data.idTeam);
+    
+    const users = await usersDB.find({ idTeam: team._id });
+
+    
+    const result = {
+        teamName: team.teamName,
+        users
+    };
+
+    return ({
+        isValid: true,
+        message: "Team retrieved successfully",
+        data: result
+    });
+};
+
+async function getAllTeams() {
+    const teams = await teamDB.find({}, { __v: 0 });
+
+    return ({
+        isValid: true,
+        message: "Teams retrieved successfully",
+        data: teams
+    });
+};
+
+
+
+module.exports = { createTeam, updateTeam, deleteTeam, addToAccount, getOneTeam, getAllTeams };

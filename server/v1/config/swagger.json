@@ -1,14 +1,179 @@
 {
-    "openapi": "3.0.0",
+    "swagger": "2.0",
     "info": {
         "title": "Arkus Challenge Backend",
         "version": "1.0.0"
     },
-    "paths": {
-        "/": {
-            "get": {
-                "description": "Testing"
-            }
+    "produces": ["application/json"],
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "securityDefinitions": {
+        "bearerAuth": {
+          "name": "Authorization",
+          "in": "header",
+          "type": "apiKey",
+          "description": "enter the session token includes the word Bearer and a space before the token"
         }
+    },
+    "paths": {
+        "/session/login": {
+            "post": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "login",
+                "tags": ["Login"],
+                "summary": "Log a user",
+                "parameters": [ 
+                {
+                    "in": "body",
+                    "name": "User Data",
+                    "required": true,
+                    "type": "string",
+                    "schema": {
+                      "properties": {
+                        "email": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                      }
+                    }
+                }                
+                ],
+                "responses": {}
+            }
+        },
+        "/accounts/createAccount": {
+                "post": {
+                    "x-swagger-router-controller": "middleware-name1",
+                    "operationId": "accounts",
+                    "tags": ["Accounts"],
+                    "summary": "Create an account",
+                    "parameters": [ 
+                    {
+                        "in": "body",
+                        "name": "User Data",
+                        "required": true,
+                        "type": "string",
+                        "schema": {
+                          "properties": {
+                            "accountName": {
+                                "type": "string"
+                            },
+                            "clientName": {
+                                "type": "string"
+                            },
+                            "responsableName": {
+                                "type": "string"
+                            }
+                          }
+                        }
+                    }                
+                    ],
+                    "responses": {}
+                }
+        },
+        "/accounts/updateAccount": {
+            "put": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "accounts",
+                "tags": ["Accounts"],
+                "summary": "Update an account",
+                "parameters": [ 
+                {
+                    "in": "body",
+                    "name": "User Data",
+                    "required": false,
+                    "type": "string",
+                    "schema": {
+                      "properties": {
+                        "accountName": {
+                            "type": "string"
+                        },
+                        "clientName": {
+                            "type": "string"
+                        },
+                        "responsableName": {
+                            "type": "string"
+                        }
+                      }
+                    }
+                }                
+                ],
+                "responses": {}
+            }
+        },
+        "/accounts/deleteAccount": {
+            "delete": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "accounts",
+                "tags": ["Accounts"],
+                "summary": "Delete an account",
+                "parameters": [ 
+                {
+                    "in": "body",
+                    "name": "User Data",
+                    "required": true,
+                    "type": "string",
+                    "schema": {
+                      "properties": {
+                        "idAccount": {
+                            "type": "string"
+                        }
+                      }
+                    }
+                }                
+                ],
+                "responses": {}
+            }
+        },
+        "/accounts/getOneAccount": {
+            "get": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "accounts",
+                "tags": ["Accounts"],
+                "summary": "Get an account",
+                "parameters": [ 
+                {
+                    "in": "params",
+                    "name": "idAccount",
+                    "required": true,
+                    "type": "string",
+                    "schema": {
+                      "properties": {
+                        "idAccount": {
+                            "type": "string"
+                        }
+                      }
+                    }
+                }                
+                ],
+                "responses": {}
+            }
+        },
+        "/teams/createTeam": {
+            "delete": {
+                "x-swagger-router-controller": "middleware-name1",
+                "operationId": "teams",
+                "tags": ["Teams"],
+                "summary": "Create a Team",
+                "parameters": [ 
+                {
+                    "in": "body",
+                    "name": "User Data",
+                    "required": true,
+                    "type": "string",
+                    "schema": {
+                      "properties": {
+                        "idAccount": {
+                            "type": "string"
+                        }
+                      }
+                    }
+                }                
+                ],
+                "responses": {}
+            }
+        } 
     }
 }

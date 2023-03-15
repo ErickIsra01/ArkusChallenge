@@ -6,6 +6,11 @@ async function addAccount(accountData) {
     return addedAccount;
 }
 
+async function findById(id) {
+    const account = await accountModel.findById(id);
+    return account;
+}
+
 async function findByName(name) {
     const accounts = await accountModel.findOne({ accountName: name });
     return accounts;
@@ -21,4 +26,9 @@ async function deleteAccount(id) {
     return account
 }
 
-module.exports = { findByName, addAccount, updateAccount, deleteAccount };
+async function find(data, parameters) {
+    const accounts = await accountModel.find(data, parameters);
+    return accounts;
+}
+
+module.exports = { findByName, addAccount, updateAccount, deleteAccount, findById, find };

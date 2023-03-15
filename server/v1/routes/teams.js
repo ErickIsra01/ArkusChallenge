@@ -9,11 +9,11 @@ const app = express();
 app.post('/createTeam', authorization, rangeVerification.superUserAndAdminRange, teamControllers.createTeam);
 
 app.put('/updateTeam', authorization, rangeVerification.superUserAndAdminRange, teamControllers.updateTeam);
-app.put('/addToAccount', authorization, rangeVerification.superUserAndAdminRange, )
+app.put('/addToAccount', authorization, rangeVerification.superUserAndAdminRange, teamControllers.addToAccount)
 
 app.delete('/deleteTeam', authorization, rangeVerification.superUserAndAdminRange, teamControllers.deleteTeam);
 
-app.get('/getOneTeam')
-app.get('/getManyTeams')
+app.get('/getOneTeam', authorization, rangeVerification.superUserAndAdminRange, teamControllers.getOneTeam)
+app.get('/getAllTeams', authorization, rangeVerification.superUserAndAdminRange, teamControllers.getAllTeams)
 
 module.exports = app;

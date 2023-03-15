@@ -28,6 +28,16 @@ async function deleteAccount(data) {
         message: "Account deleted successfully",
         data: accountDeleted
     });
-}
+};
 
-module.exports = { createAccount, updateAccount, deleteAccount };
+async function getAllAccounts() {
+    const accounts = await accountDB.find({}, { __v: 0 });
+
+    return ({
+        isValid: true,
+        message: "Accounts retrieved successfully",
+        data: accounts
+    });
+};
+
+module.exports = { createAccount, updateAccount, deleteAccount, getAllAccounts };

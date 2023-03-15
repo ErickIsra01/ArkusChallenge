@@ -32,4 +32,9 @@ async function findByToken(token) {
     return user;
 }
 
-module.exports = { findByMail, findById, findByToken, addUser, updateUser, deleteUser };
+async function find(data) {
+    const users = await usersModel.find(data, { password: 0, idMove: 0, });
+    return users;
+}
+
+module.exports = { findByMail, findById, findByToken, addUser, updateUser, deleteUser, find };

@@ -26,4 +26,9 @@ async function updateTeam(id, data) {
     return updatedTeam;
 }
 
-module.exports = { findByName, createTeam, updateTeam, findById, deleteTeam };
+async function find(data, parameters) {
+    const teams = await teamModel.find(data, parameters);
+    return teams;
+}
+
+module.exports = { findByName, createTeam, updateTeam, findById, deleteTeam, find };
