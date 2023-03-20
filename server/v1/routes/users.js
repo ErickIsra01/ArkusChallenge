@@ -13,5 +13,6 @@ app.put('/addToTeam', authorization, rangeVerification.superUserAndAdminRange, u
 app.delete("/deleteUser", authorization, rangeVerification.superUserAndAdminRange, usersControllers.deleteUser);
 
 app.get('/getOneUser', authorization, usersControllers.getOneUser);
+app.get('/getAllUsers', authorization, usersControllers.getAllUsers);
 
 module.exports = app;

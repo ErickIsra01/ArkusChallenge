@@ -56,7 +56,7 @@ const updateTeam = async (req, res) => {
 
 const deleteTeam = async (req, res) => {
     try{
-        const validatedData = await teamDTO.inputDeleteandGetOneTeam(req.body);
+        const validatedData = await teamDTO.inputDeleteandGetOneTeam(req.query);
         if(validatedData.isValid === false) return(res.status(422).send(validatedData));
 
         const data = await teamServices.deleteTeam(validatedData);
@@ -108,7 +108,7 @@ const addToAccount = async (req, res) => {
 
 const getOneTeam = async (req, res) => {
     try{
-        const validatedData = await teamDTO.inputDeleteandGetOneTeam(req.params);
+        const validatedData = await teamDTO.inputDeleteandGetOneTeam(req.query);
         if(validatedData.isValid === false) return(res.status(422).send(validatedData));
         
         const checkedTeam = await teamDB.findById(validatedData.idTeam);

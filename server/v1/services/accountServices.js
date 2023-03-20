@@ -25,7 +25,7 @@ async function deleteAccount(data) {
 
     return ({
         isValid: true,
-        message: "Account deleted successfully",
+        message: "Account retreived successfully",
         data: accountDeleted
     });
 };

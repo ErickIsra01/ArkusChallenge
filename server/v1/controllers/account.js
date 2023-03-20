@@ -57,7 +57,7 @@ const updateAccount = async (req, res) => {
 
 const deleteAccount = async (req, res) => {
     try {
-        const validatedData = await accountDTO.inputDeleteAccount(req.body);
+        const validatedData = await accountDTO.inputDeleteAccount(req.query);
         if(validatedData.isValid === false) return (res.status(422).send(validatedData));
 
         const data = await accountServices.deleteAccount(validatedData);
@@ -79,7 +79,7 @@ const deleteAccount = async (req, res) => {
 
 const getOneAccount = async (req, res) => {
     try {
-        const validatedData = await accountDTO.inputDeleteAccount(req.params);
+        const validatedData = await accountDTO.inputDeleteAccount(req.query);
         if(validatedData.isValid === false) return (res.status(422).send(validatedData));
 
         const data = await accountServices.deleteAccount(validatedData);

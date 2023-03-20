@@ -31,4 +31,23 @@ async function find(data, parameters) {
     return teams;
 }
 
-module.exports = { findByName, createTeam, updateTeam, findById, deleteTeam, find };
+async function findAll() {
+    const teams = await teamModel.aggregate([
+        { $lookup: {
+            from: 'accounts',
+            localField: 'idAccount',
+            foreignField: '_id',
+            as: 'accountData'
+        } },
+        {
+            $unwind: { path: "$accountData", preserveNullAndEmptyArrays: true }
+        },
+        {
+            $project: { "__v": 0 }
+        }
+    ]
+    );
+    return teams;
+}
+
+module.exports = { findByName, createTeam, updateTeam, findById, deleteTeam, find, findAll };

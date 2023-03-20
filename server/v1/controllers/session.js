@@ -43,4 +43,16 @@ const login = async (req, res) => {
     }
 }
 
-module.exports = { login };
+const verify = (req, res) => {
+    try{
+        return res.status(200).send();
+    } catch(error) {
+        return res.status(500).send({
+            isValid: false,
+            message: error,
+            data: null 
+        });
+    }
+} 
+
+module.exports = { login, verify };

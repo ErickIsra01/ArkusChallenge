@@ -44,7 +44,7 @@ const updateUser = async (req, res) => {
         if(validatedData.isValid === false) return(res.status(422).send(validatedData));
 
         const checkUser = await usersDB.findByMail(validatedData.data.email);
-        if(checkUser) return(res.status(409).send("Email already exists"));     
+        if(checkUser) return(res.status(409).send({ isValid: false, message: "Email already exists", data: null }));     
 
         const data = await usersServices.updateUser(validatedData);
 
@@ -66,7 +66,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try{
-        const validatedData = await usersDTO.inputGetOneUserAndDeleteUser(req.body);
+        const validatedData = await usersDTO.inputGetOneUserAndDeleteUser(req.query);
         if(validatedData.isValid === false) return(res.status(422).send(validatedData));
 
         const data = await usersServices.deleteUser(validatedData);
@@ -120,10 +120,9 @@ const addToTeam = async (req, res) => {
 
 const getOneUser = async (req, res) => {
     try{
-        const validatedData = await usersDTO.inputGetOneUserAndDeleteUser(req.params);
-        if(validatedData.isValid === false) return(res.status(422).send(validatedData));
-        
-        const checkedUser = await usersDB.findById(validatedData.idUser);
+        const idUser = jwt.verify(req.headers.authorization.split(" ")[1], process.env.TOKEN_SECRET);
+
+        const checkedUser = await usersDB.findById({_id: idUser});
         if(!checkedUser) return(res.status(409).send("The user doesn't exist"));
 
         const data = await usersServices.getOneUser(checkedUser);
@@ -143,4 +142,23 @@ const getOneUser = async (req, res) => {
     }
 };
 
-module.exports = { createUser, updateUser, deleteUser, addToTeam, getOneUser };
+const getAllUsers = async (req, res) => {
+    try{
+        const data = await usersServices.getAllUsers();
+
+        return res.status(200).send({
+            isValid: data.isValid,
+            message: data.message,
+            data: data.data 
+        });
+
+    } catch (error) {
+        return res.status(500).send({
+            isValid: false,
+            message: error,
+            data: null 
+        });
+    }
+}
+
+module.exports = { createUser, updateUser, deleteUser, addToTeam, getOneUser, getAllUsers };

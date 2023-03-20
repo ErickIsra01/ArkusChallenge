@@ -48,6 +48,7 @@
                     "x-swagger-router-controller": "middleware-name1",
                     "operationId": "accounts",
                     "tags": ["Accounts"],
+                    "security": [{ "bearerAuth": [] }],
                     "summary": "Create an account",
                     "parameters": [ 
                     {
@@ -78,6 +79,7 @@
                 "x-swagger-router-controller": "middleware-name1",
                 "operationId": "accounts",
                 "tags": ["Accounts"],
+                "security": [{ "bearerAuth": [] }],
                 "summary": "Update an account",
                 "parameters": [ 
                 {
@@ -108,6 +110,7 @@
                 "x-swagger-router-controller": "middleware-name1",
                 "operationId": "accounts",
                 "tags": ["Accounts"],
+                "security": [{ "bearerAuth": [] }],
                 "summary": "Delete an account",
                 "parameters": [ 
                 {
@@ -132,6 +135,7 @@
                 "x-swagger-router-controller": "middleware-name1",
                 "operationId": "accounts",
                 "tags": ["Accounts"],
+                "security": [{ "bearerAuth": [] }],
                 "summary": "Get an account",
                 "parameters": [ 
                 {
@@ -156,6 +160,7 @@
                 "x-swagger-router-controller": "middleware-name1",
                 "operationId": "teams",
                 "tags": ["Teams"],
+                "security": [{ "bearerAuth": [] }],
                 "summary": "Create a Team",
                 "parameters": [ 
                 {

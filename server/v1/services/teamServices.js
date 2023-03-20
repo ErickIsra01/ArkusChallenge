@@ -64,7 +64,7 @@ async function getOneTeam(data) {
 };
 
 async function getAllTeams() {
-    const teams = await teamDB.find({}, { __v: 0 });
+    const teams = await teamDB.findAll();
 
     return ({
         isValid: true,

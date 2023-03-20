@@ -2,6 +2,7 @@ const usersDB = require("./database/usersDB");
 const teamDB = require("../services/database/teamDB");
 const bcrypt = require('bcryptjs');
 const movesDB = require("./database/movesDB");
+const mongoose = require("mongoose");
 
 async function userRegistration(data) {
     const encryptedPassword = await bcrypt.hash(data.password, 10);
@@ -17,6 +18,9 @@ async function userRegistration(data) {
 };
 
 async function updateUser(data) {
+    const encryptedPassword = await bcrypt.hash(data.data.password, 10);
+    data.data.password = encryptedPassword;
+    
     const updatedUser = await usersDB.updateUser({_id: data.idUser}, data.data);
 
     return({
@@ -55,8 +59,8 @@ async function addToTeam(data, userData, teamData) {
     })
 };
 
-async function getOneUser(data) {    
-    const teamData = await teamDB.findById(data.idTeam);
+async function getOneUser(data) {
+    const teamData = await teamDB.find({_id: data.idTeam});
 
     const userData = {
         name: data.name,
@@ -70,9 +74,19 @@ async function getOneUser(data) {
 
     return({
         isValid: true,
-        message: "User added to team successfully",
+        message: "User retrieved successfully",
         data: userData
     })
 };
 
-module.exports = { userRegistration, deleteUser, updateUser, addToTeam, getOneUser };
+async function getAllUsers() {
+    const userData = await usersDB.find({});
+
+    return({
+        isValid: true,
+        message: "Users retrieved successfully",
+        data: userData
+    })
+};
+
+module.exports = { userRegistration, deleteUser, updateUser, addToTeam, getOneUser, getAllUsers };
