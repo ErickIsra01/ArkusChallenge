@@ -40,4 +40,14 @@ async function getAllAccounts() {
     });
 };
 
-module.exports = { createAccount, updateAccount, deleteAccount, getAllAccounts };
+async function getOneAccount(data) {
+    const accounts = await accountDB.findById(data.idAccount);
+
+    return ({
+        isValid: true,
+        message: "Accounts retrieved successfully",
+        data: accounts
+    });
+};
+
+module.exports = { createAccount, updateAccount, deleteAccount, getAllAccounts, getOneAccount };

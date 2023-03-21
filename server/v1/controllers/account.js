@@ -81,8 +81,8 @@ const getOneAccount = async (req, res) => {
     try {
         const validatedData = await accountDTO.inputDeleteAccount(req.query);
         if(validatedData.isValid === false) return (res.status(422).send(validatedData));
-
-        const data = await accountServices.deleteAccount(validatedData);
+        
+        const data = await accountServices.getOneAccount(validatedData);
 
         return(res.status(200).send({
             isValid: data.isValid,
